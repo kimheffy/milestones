@@ -8,7 +8,8 @@
     "db:migrate": "dotenv -- drizzle-kit migrate",
     "dev": "dotenv -- node server.js",
     "start": "node server.js",
-    "typecheck": "react-router typegen && tsc -b"
+    "typecheck": "react-router typegen && tsc -b",
+    "test": "vitest"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-beta.2",
@@ -44,6 +45,7 @@
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }

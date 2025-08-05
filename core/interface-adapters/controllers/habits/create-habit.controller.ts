@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createHabitUseCase } from "~/core/application/use-cases/create-habit.use-case";
+import { InputParseError } from "~/core/entities/errors/common";
 import type { Habit } from "~/core/entities/models/habit";
 
 function presenter(habit: Habit) {
@@ -28,9 +29,7 @@ export async function createHabitController(
 	});
 
 	if (inputParseError) {
-		throw new Error("Invalid data", { cause: inputParseError });
-		// TODO: Create an InputParseError model
-		// throw new InputParseError("Invalid data", { cause: inputParseError });
+		throw new InputParseError("Invalid data", { cause: inputParseError });
 	}
 
 	const habit = await createHabitUseCase(data.habit /*, user.id*/);

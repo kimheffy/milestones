@@ -8,7 +8,8 @@
     "database/**/*",
     "server/**/*",
     "core/**/*",
-    "dependency-injection/**/*"
+    "dependency-injection/**/*",
+    "tests/**/*"
   ],
   "compilerOptions": {
     "composite": true,
