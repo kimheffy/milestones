@@ -6,24 +6,47 @@
     "app/**/.server/**/*",
     "app/**/.client/**/*",
     "database/**/*",
-    "server/**/*"
+    "server/**/*",
+    "core/**/*",
+    "dependency-injection/**/*"
   ],
   "compilerOptions": {
     "composite": true,
     "strict": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["vite/client"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022"
+    ],
+    "types": [
+      "vite/client"
+    ],
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "rootDirs": [".", "./.react-router/types"],
+    "rootDirs": [
+      ".",
+      "./.react-router/types"
+    ],
     "paths": {
-      "~/database/*": ["./database/*"],
-      "~/*": ["./app/*"]
+      "~/database/*": [
+        "./database/*"
+      ],
+      "~/*": [
+        "./app/*"
+      ],
+      "~/core/*": [
+        "./core/*"
+      ],
+      "~/di/*": [
+        "./dependency-injection/*"
+      ]
     },
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
