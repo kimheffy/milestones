@@ -4,29 +4,26 @@ import { Form } from "@base-ui-components/react/form";
 
 import { createHabitController } from "~/core/interface-adapters/controllers/habits/create-habit.controller";
 
+export async function action({ request }: Route.ActionArgs) {
+	try {
+		const formData = new FormData(event.currentTarget);
+		const value = formData.get("habit") as string;
+
+		setLoading(true);
+		await createHabitController(value);
+	} catch (err) {
+		console.error("Something went wrong...", err);
+		setErrors({ error: err });
+	} finally {
+		setLoading(false);
+	}
+
+	return { success: true };
+}
+
 export function HabitForm() {
 	const [errors, setErrors] = React.useState({});
 	const [loading, setLoading] = React.useState(false);
-
-	// Server action
-	async function createHabit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
-		try {
-			const formData = new FormData(event.currentTarget);
-			const value = formData.get("habit") as string;
-
-			setLoading(true);
-			await createHabitController(value);
-		} catch (err) {
-			console.error("Something went wrong...", err);
-			setErrors({ error: err });
-		} finally {
-			setLoading(false);
-		}
-
-		return { success: true };
-	}
 
 	return (
 		<div className="flex justify-center mt-4">

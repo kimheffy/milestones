@@ -1,45 +1,43 @@
 import * as React from "react";
+import { useSubmit } from "react-router";
+import type { Route } from "./+types/sign-up";
 import { Form } from "@base-ui-components/react/form";
 import { Field } from "@base-ui-components/react/field";
-import { InputParseError } from "~/core/entities/errors/common";
+import { InputParseError } from "~/entities/errors/common";
 import { signUpController } from "~/core/interface-adapters/controllers/auth/sign-up.controller";
-import { AuthenticationError } from "~/core/entities/errors/auth";
+import { AuthenticationError } from "~/entities/errors/auth";
+
+export async function action({ request }: Route.ActionArgs) {
+	try {
+		const formData = await request.formData();
+		const email = formData.get("input");
+
+		if (!email) {
+			return;
+		}
+
+		await signUpController(email);
+	} catch (err) {
+		console.error("something went wrong.", err);
+
+		if (err instanceof InputParseError) {
+			return { error: err.message };
+		}
+
+		if (err instanceof AuthenticationError) {
+			return { error: err.message };
+		}
+
+		return {
+			error: "An error happended while signing up.",
+		};
+	}
+}
 
 export default function Signup() {
 	const [errors, setErrors] = React.useState({});
 	const [loading, setLoading] = React.useState(false);
-
-	// TODO: Refactor with clean code (this will belong in the app/actions directory)
-	async function handleAuth(evt: React.FormEvent<HTMLFormElement>) {
-		try {
-			setLoading(true);
-			const formData = new FormData(evt.currentTarget);
-			const email = formData.get("email") as string;
-
-			await signUpController(email);
-		} catch (err) {
-			// TODO: Use entities/errors for a more descriptive error
-			console.error("Failed on handleAuth... ", err);
-
-			if (err instanceof InputParseError) {
-				return { error: err.message };
-			}
-
-			if (err instanceof AuthenticationError) {
-				return { error: err.message };
-			}
-
-			return {
-				error: "An error happended while signing up.",
-			};
-		} finally {
-			setLoading(false);
-		}
-
-		// TODO: do we have something similar to revalidatePath('/')??
-		// Since we are using Magic Link, i think we revalidatePath on verify page
-		return { success: true };
-	}
+	const submit = useSubmit();
 
 	return (
 		<div className="flex justify-center mt-4">
@@ -47,7 +45,16 @@ export default function Signup() {
 				className="flex w-full max-w-64 flex-col gap-4"
 				errors={errors}
 				onClearErrors={setErrors}
-				onSubmit={handleAuth}
+				onSubmit={(evt) => {
+					evt.preventDefault();
+					const formData = new FormData(evt.currentTarget);
+					submit(
+						{
+							input: formData.get("email") as string,
+						},
+						{ action: "/register", method: "post" },
+					);
+				}}
 			>
 				<Field.Root name="email" className="flex flex-col items-start gap-1">
 					<Field.Control

@@ -1,44 +1,35 @@
-import * as React from "react";
-import { useSearchParams } from "react-router";
+import { redirect } from "react-router";
+import type { Route } from "./+types/verify";
 import { verifyController } from "~/core/interface-adapters/controllers/auth/verify.controller";
-import { InputParseError } from "~/core/entities/errors/common";
-import { AuthenticationError } from "~/core/entities/errors/auth";
+import { InputParseError } from "~/entities/errors/common";
+import { AuthenticationError } from "~/entities/errors/auth";
 
-export default function Verify() {
-	const [searchParams] = useSearchParams();
+export async function loader(loader: Route.LoaderArgs) {
+	const url = new URL(loader.request.url);
+	const userId = url.searchParams.get("userId");
+	const secretToken = url.searchParams.get("secret");
 
-	const userId = searchParams.get("userId");
-	const secretToken = searchParams.get("secret");
+	try {
+		await verifyController(userId, secretToken);
+	} catch (err) {
+		console.error("Failed on init... ", err);
 
-	// TODO: Put this in an action file
-	async function init() {
-		try {
-			await verifyController(userId, secretToken);
-		} catch (err) {
-			// TODO: report errors
-			console.error("Failed on init... ", err);
+		if (err instanceof InputParseError) {
+			return { error: err.message };
+		}
 
-			if (err instanceof InputParseError) {
-				return { error: err.message };
-			}
-
-			if (err instanceof AuthenticationError) {
-				return { error: err.message };
-			}
-
-			return {
-				error: "An error has occured when trying to verify your credentials.",
-			};
+		if (err instanceof AuthenticationError) {
+			return { error: err.message };
 		}
 
 		return {
-			success: true,
+			error: "An error has occured when trying to verify your credentials.",
 		};
 	}
 
-	React.useEffect(() => {
-		init();
-	}, []);
+	return redirect("/");
+}
 
+export default function Verify() {
 	return <h1>You are on the verify page</h1>;
 }

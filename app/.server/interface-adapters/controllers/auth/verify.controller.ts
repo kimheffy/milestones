@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { InputParseError } from "~/core/entities/errors/common";
+import { InputParseError } from "~/entities/errors/common";
 import { verifyUseCase } from "~/core/application/use-cases/auth/verify.use-case";
 
 const inputSchema = z.object({
@@ -20,5 +20,7 @@ export async function verifyController(
 		throw new InputParseError("Invalid data", { cause: inputParseError });
 	}
 
-	await verifyUseCase(data);
+	const result = await verifyUseCase(data);
+
+	console.log("verifyController -> ", result);
 }

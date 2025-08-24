@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { createHabitUseCase } from "~/core/application/use-cases/create-habit.use-case";
-import { InputParseError } from "~/core/entities/errors/common";
-import type { Habit } from "~/core/entities/models/habit";
+import { InputParseError } from "~/entities/errors/common";
+import type { Habit } from "~/entities/models/habit";
 
 function presenter(habit: Habit) {
 	return {

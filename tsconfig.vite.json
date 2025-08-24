@@ -39,7 +39,10 @@
         "./app/*"
       ],
       "~/core/*": [
-        "./core/*"
+        "./app/.server/*"
+      ],
+      "~/entities/*": [
+        "./core/entities/*"
       ],
       "~/di/*": [
         "./dependency-injection/*"

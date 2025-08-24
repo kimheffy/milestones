@@ -4,6 +4,7 @@ import { DI_SYMBOLS, type DI_RETURN_TYPES } from "~/di/types";
 
 import { HabitsModule } from "~/di/modules/habits.module";
 import { AuthenticationModule } from "~/di/modules/authentication.module";
+import { UsersModule } from "~/di/modules/users.module";
 
 const ApplicationContainer = new Container({
 	defaultScope: "Singleton",
@@ -12,11 +13,13 @@ const ApplicationContainer = new Container({
 export const initalizeContainer = () => {
 	ApplicationContainer.load(HabitsModule);
 	ApplicationContainer.load(AuthenticationModule);
+	ApplicationContainer.load(UsersModule);
 };
 
 export const destroyContainer = () => {
 	ApplicationContainer.unload(HabitsModule);
 	ApplicationContainer.unload(AuthenticationModule);
+	ApplicationContainer.unload(UsersModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

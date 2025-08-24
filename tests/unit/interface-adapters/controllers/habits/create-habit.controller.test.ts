@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, it } from "vitest";
 
 import { destroyContainer, initalizeContainer } from "~/di/container";
 import { createHabitController } from "~/core/interface-adapters/controllers/habits/create-habit.controller";
-import { InputParseError } from "~/core/entities/errors/common";
+import { InputParseError } from "~/entities/errors/common";
 
 beforeEach(() => {
 	initalizeContainer();

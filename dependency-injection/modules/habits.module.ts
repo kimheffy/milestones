@@ -1,7 +1,7 @@
 import { ContainerModule, type ContainerModuleLoadOptions } from "inversify";
 
-import type { IHabitsRepository } from "../../core/application/repositories/habits.repository.interface";
-import { HabitsRepository } from "../../core/infrastructure/repositories/habits.repository";
+import { HabitsRepository } from "../../app/.server/infrastructure/repositories/habits.repository";
+import type { IHabitsRepository } from "../../app/.server/application/repositories/habits.repository.interface";
 import { DI_SYMBOLS } from "../types";
 
 const initalizeModule = ({ bind }: ContainerModuleLoadOptions) => {
